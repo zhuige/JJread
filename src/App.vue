@@ -26,7 +26,7 @@
         <span class="mui-tab-label">分类</span>
       </router-link>
       <router-link class="mui-tab-item" to="/ranking" :class="{active:this.$route.query.bookListType=='ranking'}">
-        <span class="mui-icon mui-icon-bars"></span>
+        <span class="mui-icon mui-icon-flag"></span>
         <span class="mui-tab-label">排行</span>
       </router-link>
     </nav>
