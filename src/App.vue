@@ -12,19 +12,20 @@
 
     <!--底部导航栏-->
     <nav class="mui-bar mui-bar-tab" style="box-shadow: 0 0 1px rgba(0,0,0,0.3); z-index: 20000">
-      <router-link class="mui-tab-item" to="/home">
+      <router-link class="mui-tab-item" to="/home" :class="{active:this.$route.query.bookListType=='home'}">
         <span class="mui-icon mui-icon-home"></span>
         <span class="mui-tab-label">书架</span>
       </router-link>
-      <router-link class="mui-tab-item" to="/recommend">
+      <router-link class="mui-tab-item" :class="{active:this.$route.query.bookListType=='recommend'}" to="/recommend">
         <span class="mui-icon mui-icon-paperplane"></span>
         <span class="mui-tab-label">推荐</span>
       </router-link>
-      <router-link class="mui-tab-item" to="/classification">
+      <router-link class="mui-tab-item" to="/classification"
+                   :class="{active:this.$route.query.bookListType=='classification'}">
         <span class="mui-icon mui-icon-chatboxes-filled"></span>
         <span class="mui-tab-label">分类</span>
       </router-link>
-      <router-link class="mui-tab-item" to="/ranking">
+      <router-link class="mui-tab-item" to="/ranking" :class="{active:this.$route.query.bookListType=='ranking'}">
         <span class="mui-icon mui-icon-bars"></span>
         <span class="mui-tab-label">排行</span>
       </router-link>
@@ -67,6 +68,11 @@
 </script>
 
 <style lang="less" scoped>
+
+  .active {
+    color: mediumpurple;
+  }
+
   /deep/ .mui-active {
     color: mediumpurple !important;
   }
@@ -96,6 +102,6 @@
 
   .v-enter-active,
   .v-leave-active {
-    transition: all 0.3s ease;
+    transition: all 0.4s ease;
   }
 </style>

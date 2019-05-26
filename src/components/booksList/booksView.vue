@@ -1,53 +1,55 @@
 <template>
   <div>
-      <div class="center" data-flex="cross:top" v-for="item in data" :key="item._id"  @click="routerGo(item._id)">
-        <div data-flex-box="0"><img
-          :src="item.cover"
-          alt=""></div>
-        <div data-flex-box="0" class="right">
-          <h3>{{item.title}}</h3>
-          <p>{{item.shortIntro}}</p>
-          <div class="dv">
-            <span class="span1">{{item.author}}</span>
-            <span class="span2">{{item.majorCate}}</span>
-          </div>
+    <div class="center" data-flex="cross:top" v-for="item in data" :key="item._id" @click="routerGo(item._id)">
+      <div data-flex-box="0"><img
+        :src="item.cover"
+        alt=""></div>
+      <div data-flex-box="0" class="right">
+        <h3>{{item.title}}</h3>
+        <p>{{item.shortIntro}}</p>
+        <div class="dv">
+          <span class="span1">{{item.author}}</span>
+          <span class="span2">{{item.majorCate}}</span>
         </div>
       </div>
-</div>
+    </div>
+  </div>
 </template>
 
 <script>
-    export default {
-        name: "booksList",
-      props:['data'],
-      data(){
-          return{
-            bookListType:'',
+  export default {
+    name: "booksList",
+    props: ['data'],
+    data() {
+      return {
+        bookListType: '',
+      }
+    },
+    created() {
+      if (this.$route.path.indexOf('/recommend') != -1) {
+        this.bookListType = 'recommend'
+      } else if (this.$route.path.indexOf('/home') != -1) {
+        this.bookListType = 'home'
+      } else if (this.$route.path.indexOf('/classification') != -1) {
+        this.bookListType = 'classification'
+      } else if (this.$route.path.indexOf('/ranking') != -1) {
+        this.bookListType = 'ranking'
+      } else {
+
+      }
+    },
+    methods: {
+      routerGo(id) {
+        this.$router.push({
+          path: '/booksDetail',
+          query: {
+            id: id,
+            bookListType: this.bookListType
           }
-      },
-      created(){
-         if(this.$route.path.indexOf('/recommend')){
-          this.bookListType='recommend'
-         }else if(this.$route.path.indexOf('/home')){
-           this.bookListType='home'
-        }else if(this.$route.path.indexOf('/classification')){
-           this.bookListType='classification'
-         }else if(this.$route.path.indexOf('/ranking')){
-           this.bookListType='ranking'
-         }
-      },
-      methods:{
-        routerGo(id){
-         this.$router.push({
-           path:'/booksDetail',
-           query:{
-             id:id,
-             bookListType:this.bookListType
-           }
-         })
-        }
+        })
       }
     }
+  }
 </script>
 <style lang="less" scoped>
   .center {
@@ -102,7 +104,7 @@
         }
         .span1 {
           float: left;
-          background-color: #4caf50;
+          background-color: #28a745;
         }
         .span2 {
           float: right;

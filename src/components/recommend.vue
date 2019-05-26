@@ -44,9 +44,10 @@
       this.getRecommendList()
     },
     methods: {
-      onBrowserBack(){
-        if(this.$routerName.indexOf(this.$route.path) > -1){
+      onBrowserBack() {
+        if (this.$routerName.indexOf(this.$route.path) > -1) {
           window.history.pushState(null, null, document.URL);
+          this.$toast({position: 'center', duration: 500, message: '再按一次退出'})
         }
       },
       getRecommendList() {

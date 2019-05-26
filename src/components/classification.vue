@@ -6,9 +6,10 @@
       </mu-flex>
     </mu-container>
     <div class="class-content">
-     <h2 class="class-name" v-if="classList.male.length>0">男生</h2>
-      <div class="center" data-flex="cross:top" >
-        <div data-flex-box="0" class="item" v-for="(item,index) in classList.male" :key="index" @click="routerGo({classType:'male',name:item.name})">
+      <h2 class="class-name" v-if="classList.male.length>0">男生</h2>
+      <div class="center" data-flex="cross:top">
+        <div data-flex-box="0" class="item" v-for="(item,index) in classList.male" :key="index"
+             @click="routerGo({classType:'male',name:item.name})">
           <div data-flex="cross:top">
             <div data-flex-box="0"><img :src="item.bookCover[0]" alt=""></div>
             <div data-flex-box="0" class="right">
@@ -20,7 +21,8 @@
       </div>
       <h2 class="class-name" v-if="classList.female.length>0">女生</h2>
       <div class="center" data-flex="cross:top">
-        <div data-flex-box="0" class="item" v-for="(item,index) in classList.female" :key="index"@click="routerGo({classType:'female',name:item.name})">
+        <div data-flex-box="0" class="item" v-for="(item,index) in classList.female" :key="index"
+             @click="routerGo({classType:'female',name:item.name})">
           <div data-flex="cross:top">
             <div data-flex-box="0"><img :src="item.bookCover[0]" alt=""></div>
             <div data-flex-box="0" class="right">
@@ -32,7 +34,8 @@
       </div>
       <h2 class="class-name" v-if="classList.picture.length>0">精品</h2>
       <div class="center" data-flex="cross:top">
-        <div data-flex-box="0" class="item" v-for="(item,index) in classList.picture" :key="index" @click="routerGo({classType:'picture',name:item.name})">
+        <div data-flex-box="0" class="item" v-for="(item,index) in classList.picture" :key="index"
+             @click="routerGo({classType:'picture',name:item.name})">
           <div data-flex="cross:top">
             <div data-flex-box="0"><img :src="item.bookCover[0]" alt=""></div>
             <div data-flex-box="0" class="right">
@@ -44,7 +47,8 @@
       </div>
       <h2 class="class-name" v-if="classList.press.length>0">出版</h2>
       <div class="center" data-flex="cross:top">
-        <div data-flex-box="0" class="item" v-for="(item,index) in classList.press" :key="index"@click="routerGo({classType:'press',name:item.name})">
+        <div data-flex-box="0" class="item" v-for="(item,index) in classList.press" :key="index"
+             @click="routerGo({classType:'press',name:item.name})">
           <div data-flex="cross:top">
             <div data-flex-box="0"><img :src="item.bookCover[0]" alt=""></div>
             <div data-flex-box="0" class="right">
@@ -86,10 +90,11 @@
       window.removeEventListener("popstate", this.onBrowserBack, false);
     },
     methods: {
-      onBrowserBack(){
-             if(this.$routerName.indexOf(this.$route.path) > -1){
-               window.history.pushState(null, null, document.URL);
-             }
+      onBrowserBack() {
+        if (this.$routerName.indexOf(this.$route.path) > -1) {
+          window.history.pushState(null, null, document.URL);
+          this.$toast({position: 'center', duration: 500, message: '再按一次退出'})
+        }
       },
       getClassList() {
         this.$http.get('/api/cats/lv2/statistics').then(result => {
@@ -108,12 +113,12 @@
           }
         })
       },
-      routerGo(obj){
+      routerGo(obj) {
         this.$router.push({
-          path:'/classification/booksList',
-          query:{
-            name:obj.name,
-            classType:obj.classType
+          path: '/classification/booksList',
+          query: {
+            name: obj.name,
+            classType: obj.classType
           }
         })
       }

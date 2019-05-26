@@ -1,6 +1,6 @@
 <template>
   <div>
-    <mu-container v-if="">
+    <mu-container v-if="loading">
       <mu-flex class="demo-linear-progress">
         <mu-linear-progress></mu-linear-progress>
       </mu-flex>
@@ -21,7 +21,7 @@
       </div>
       <div class="bt">
         <span class="b1">开始阅读</span>
-        <span class="b2">加入书架</span>
+        <span class="b2" @click="joinLike">加入书架</span>
       </div>
       <div class="intro">
         <p>{{booksDetailsList.longIntro}}</p>
@@ -37,7 +37,8 @@
         <div class="content">
           <div class="center" data-flex="cross:top" @touchstart="booksTouchStar" @touchend="booksTouchEnd"
                :style="{'margin-left':marginLeft+'vw'}">
-            <div data-flex-box="0" class="item" v-for="item in booksRecommendList" :key="item._id" >
+            <div data-flex-box="0" class="item" v-for="item in booksRecommendList" :key="item._id"
+                 @click="routerGO(item._id)">
               <img :src="item.cover">
               <h4>{{item.title}}</h4>
             </div>
@@ -53,37 +54,74 @@
     name: "booksDetail",
     data() {
       return {
+        loading: true,
         booksRecommendList: [],
-        booksDetailsList: { },
+        booksDetailsList: {},
         touchStar: '',
         touchEnd: '',
         direction: 'left',
         marginLeft: 0,
         moveIndex: 0,
-        id:this.$route.query.id
+        id: this.$route.query.id,
+        bookListType: this.$route.query.bookListType
 
       }
     },
     created() {
       this.getBooksRecommend()
-      console.log(this.$route.query)
     },
     methods: {
+      //加入书架，存储locakstorage
+      joinLike() {
+        if (this.loading == false) {
+          let booksLikeObj = {
+            _id: this.booksDetailsList._id,
+            cover: this.booksDetailsList.cover,
+            author: this.booksDetailsList.author,
+            majorCate: this.booksDetailsList.majorCate,
+            shortIntro: this.booksDetailsList.longIntro,
+            title: this.booksDetailsList.title
+          }
+          if (JSON.parse(localStorage.getItem('booksLike')) == null) {
+            let arr = [booksLikeObj]
+            localStorage.setItem('booksLike', JSON.stringify(arr))
+          } else {
+            let booksLike = JSON.parse(localStorage.getItem('booksLike'))
+            var res = booksLike.some(item => {
+              if (item._id == booksLikeObj._id) {
+                return true
+              }
+            })
+            if (res) {
 
+            } else {
+              booksLike.push(booksLikeObj)
+              localStorage.setItem('booksLike', JSON.stringify(booksLike))
+            }
+          }
+        } else {
+          this.$toast({position: 'center', duration: 700, message: '点太快了！收藏失败'})
+        }
+
+      },
+      routerGO(id) {
+
+      },
       getBooksRecommend() {
         //获取小说信息
-        this.$http.get('/api/book/'+this.id).then(result=>{
+        this.$http.get('/api/book/' + this.id).then(result => {
           if (result.statusText == "OK") {
             this.booksDetailsList = result.data
-            this.booksDetailsList.cover=unescape(this.booksDetailsList.cover.slice(7))
-            this.booksDetailsList.updated=this.booksDetailsList.updated.slice(0,10)
-          }else{
+            this.booksDetailsList.cover = unescape(this.booksDetailsList.cover.slice(7))
+            this.booksDetailsList.updated = this.booksDetailsList.updated.slice(0, 10)
+            this.loading = false
+          } else {
             this.$toast('获取详情失败')
           }
 
         })
         //获取小说推荐列表
-        this.$http.get('/api/book/'+this.id+'/recommend').then(result => {
+        this.$http.get('/api/book/' + this.id + '/recommend').then(result => {
           if (result.statusText == "OK") {
             this.booksRecommendList = result.data.books
             this.booksRecommendList.forEach(value => {
@@ -107,27 +145,27 @@
           this.direction = 'right'
         }
         //判断移动是否大于40距离
-        if (Math.abs(this.touchStar - this.touchEnd) > 40 && Math.abs(this.touchStar - this.touchEnd) < 150 ) {
+        if (Math.abs(this.touchStar - this.touchEnd) > 40 && Math.abs(this.touchStar - this.touchEnd) < 150) {
           if (this.direction == 'left') {
-            if(this.booksRecommendList.length-this.moveIndex>3){
+            if (this.booksRecommendList.length - this.moveIndex > 3) {
               this.moveIndex++;
               this.marginLeft = this.moveIndex * -30.25
             }
           } else {
-            if(this.moveIndex >0){
+            if (this.moveIndex > 0) {
               this.moveIndex--;
               this.marginLeft = this.moveIndex * -30.25
             }
           }
-        }else if(Math.abs(this.touchStar - this.touchEnd) > 150){
+        } else if (Math.abs(this.touchStar - this.touchEnd) > 150) {
           if (this.direction == 'left') {
-            if(this.booksRecommendList.length-this.moveIndex>5){
-              this.moveIndex+=3;
+            if (this.booksRecommendList.length - this.moveIndex > 5) {
+              this.moveIndex += 3;
               this.marginLeft = this.moveIndex * -30.25;
             }
-          }else{
-            if(this.moveIndex >2){
-              this.moveIndex-=3;
+          } else {
+            if (this.moveIndex > 2) {
+              this.moveIndex -= 3;
               this.marginLeft = this.moveIndex * -30.25;
             }
           }
@@ -259,7 +297,7 @@
             font-size: 3.75vw;
             text-align: center;
           }
-          img{
+          img {
             box-shadow: -2px 2px 3px 0px rgba(0, 0, 0, 0.4);
           }
         }

@@ -15,10 +15,11 @@
       // 当页面销毁必须要移除这个事件，vue不刷新页面，不移除会重复执行这个事件
       window.removeEventListener("popstate", this.onBrowserBack, false);
     },
-    methods:{
-      onBrowserBack(){
-        if(this.$routerName.indexOf(this.$route.path) > -1){
+    methods: {
+      onBrowserBack() {
+        if (this.$routerName.indexOf(this.$route.path) > -1) {
           window.history.pushState(null, null, document.URL);
+          this.$toast({position: 'bottom', duration: 500, message: '再按一次退出'})
         }
       }
     }
