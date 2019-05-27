@@ -18,13 +18,20 @@
     name: "home",
     data() {
       return {
-        booksLikeList: JSON.parse(localStorage.getItem('booksLike'))
+        booksLikeList: []
       }
     },
     components: {
       BookView
     },
     methods: {
+      getBooksLikeList(){
+        if(!JSON.parse(localStorage.getItem('booksLike'))){
+          this.booksLikeList=[]
+        }else{
+          this.booksLikeList=JSON.parse(localStorage.getItem('booksLike'))
+        }
+      },
       onBrowserBack() {
         if (this.$routerName.indexOf(this.$route.path) > -1) {
           window.history.pushState(null, null, document.URL);
@@ -32,8 +39,10 @@
         }
       }
     },
+    created() {
+      this.getBooksLikeList();
+    },
     mounted() {
-
       window.history.pushState(null, null, document.URL);
       // 给window添加一个popstate事件，拦截返回键，执行this.onBrowserBack事件，addEventListener需要指向一个方法
       window.addEventListener("popstate", this.onBrowserBack, false);
@@ -41,11 +50,6 @@
     destroyed() {
       // 当页面销毁必须要移除这个事件，vue不刷新页面，不移除会重复执行这个事件
       window.removeEventListener("popstate", this.onBrowserBack, false);
-    },
-    created() {
-      if (!JSON.parse(localStorage.getItem('booksLike'))) {
-        this.booksLikeList = []
-      }
     },
     watch: {},
 
