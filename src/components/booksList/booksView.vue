@@ -12,6 +12,9 @@
           <span class="span2">{{item.majorCate}}</span>
         </div>
       </div>
+      <div class="star" v-if="isStar(item)">
+        ★
+      </div>
     </div>
   </div>
 </template>
@@ -39,6 +42,17 @@
       }
     },
     methods: {
+      isStar(item) {
+        let booksLike = JSON.parse(localStorage.getItem('booksLike'))
+       let res =  booksLike.some(value => {
+          if (value._id == item._id) {
+            return true
+          }
+        })
+        if(res){
+          return true
+        }
+      },
       routerGo(id) {
         this.$router.push({
           path: '/booksDetail',
@@ -53,8 +67,19 @@
 </script>
 <style lang="less" scoped>
   .center {
+    position: relative;
     /*10*/
     margin-top: 2.4vw;
+    .star {
+      position: absolute;
+      color: #e9ff38;
+      right: 2.5vw;
+      /*5*/
+      top: 1.25vw;
+      /*30*/
+      font-size: 6vw;
+
+    }
     img {
       /*105*/
       width: 25.4vw;
@@ -68,6 +93,10 @@
       /*15*/
       margin-left: 3.5vw;
       h3 {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 60vw;
         /*20*/
         line-height: 4.8vw;
         font-size: 4.8vw;

@@ -18,20 +18,19 @@
     name: "home",
     data() {
       return {
-        booksLikeList: []
+
       }
     },
     components: {
-      BookView
+      BookView,
+
+    },
+    computed: {
+      booksLikeList() {
+        return this.$store.state.booksLikeList;
+      },
     },
     methods: {
-      getBooksLikeList(){
-        if(!JSON.parse(localStorage.getItem('booksLike'))){
-          this.booksLikeList=[]
-        }else{
-          this.booksLikeList=JSON.parse(localStorage.getItem('booksLike'))
-        }
-      },
       onBrowserBack() {
         if (this.$routerName.indexOf(this.$route.path) > -1) {
           window.history.pushState(null, null, document.URL);
@@ -40,7 +39,7 @@
       }
     },
     created() {
-      this.getBooksLikeList();
+     this.$store.commit('getBooksLikeList')
     },
     mounted() {
       window.history.pushState(null, null, document.URL);

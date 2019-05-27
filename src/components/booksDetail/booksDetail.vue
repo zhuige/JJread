@@ -21,7 +21,8 @@
       </div>
       <div class="bt">
         <span class="b1">开始阅读</span>
-        <span class="b2" @click="joinLike">加入书架</span>
+        <span class="b2" @click="joinLike" v-if="isStar">加入书架</span>
+        <span class="b2 btn-star" v-if="!isStar" @click="cancleStar">已收藏</span>
       </div>
       <div class="intro">
         <p>{{booksDetailsList.longIntro}}</p>
@@ -63,14 +64,40 @@
         marginLeft: 0,
         moveIndex: 0,
         id: this.$route.query.id,
-        bookListType: this.$route.query.bookListType
-
+        bookListType: this.$route.query.bookListType,
+        isStar: true
       }
     },
     created() {
+      this.initStar()
       this.getBooksRecommend()
     },
     methods: {
+      //取消收藏
+      cancleStar() {
+        let booksLike = JSON.parse(localStorage.getItem('booksLike'))
+        booksLike.forEach((item, index) => {
+          if (item._id === this.id) {
+            booksLike.splice(index,1)
+            localStorage.setItem('booksLike', JSON.stringify(booksLike))
+            this.initStar()
+          }
+        })
+      },
+      //判断是否收藏
+      initStar() {
+        let booksLike = JSON.parse(localStorage.getItem('booksLike'))
+        let res = booksLike.some(item => {
+          if (item._id == this.id) {
+            return true
+          }
+        })
+        if (res) {
+          this.isStar = false
+        }else{
+          this.isStar=true
+        }
+      },
       //加入书架，存储locakstorage
       joinLike() {
         if (this.loading == false) {
@@ -93,10 +120,10 @@
               }
             })
             if (res) {
-
             } else {
               booksLike.push(booksLikeObj)
               localStorage.setItem('booksLike', JSON.stringify(booksLike))
+              this.isStar = false
             }
           }
         } else {
@@ -216,20 +243,36 @@
       margin-top: 7.5vw;
       margin-left: 3vw;
       span {
+        width: 41.25vw;
+        line-height: 10vw;
+        display: inline-block;
+        height: 10vw;
         font-size: 4vw;
         box-sizing: border-box;
         border: 1px solid rgba(155, 155, 155, 0.4);
         border-radius: 4px;
-        padding: 2.5vw 12.5vw;
+        text-align: center;
       }
       .b1 {
         background-color: mediumpurple;
         color: #FFFFFF;
+        &:active {
+          background-color: blueviolet;
+        }
       }
       .b2 {
         margin-left: 2.5vw;
         background-color: #fff;
         color: #4A4A4A;
+        &:active {
+          background-color: #F6AB2F;
+        }
+      }
+      .btn-star {
+        background-color: #F6AB2F;
+        &:active {
+          background-color: #FFFFFF;
+        }
       }
     }
     .intro {
