@@ -1,5 +1,4 @@
 <template>
-  <div>
     <div class="home-content">
       <h2>我的书架</h2>
       <book-view :data="booksLikeList"></book-view>
@@ -8,7 +7,6 @@
         收藏起来！
       </div>
     </div>
-  </div>
 </template>
 
 <script>

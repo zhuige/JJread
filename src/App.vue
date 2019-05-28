@@ -157,6 +157,7 @@
   }
 
   .read-content {
+    height: 100vh;
     overflow: hidden;
   }
 
