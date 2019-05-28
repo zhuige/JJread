@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="overflow: hidden">
     <mu-container v-if="bookList.length<=0">
       <mu-flex class="demo-linear-progress">
         <mu-linear-progress></mu-linear-progress>
@@ -22,6 +22,7 @@
     },
     data() {
       return {
+
         obj:{
           'male':'男生',
           'female':'女生',

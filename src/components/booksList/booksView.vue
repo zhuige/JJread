@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="overflow: hidden">
     <div class="center" data-flex="cross:top" v-for="item in data" :key="item._id" @click="routerGo(item._id)">
       <div data-flex-box="0"><img
         :src="item.cover"
@@ -12,7 +12,7 @@
           <span class="span2">{{item.majorCate}}</span>
         </div>
       </div>
-      <div class="star" v-if="isStar(item)">
+      <div class="star" v-if="isStar(item)" @click.stop="cancleStar(item._id)">
         ★
       </div>
     </div>
@@ -42,14 +42,30 @@
       }
     },
     methods: {
+      //取消收藏
+      cancleStar(id) {
+        let booksLike = JSON.parse(localStorage.getItem('booksLike'))
+        booksLike.forEach((item, index) => {
+          if (item._id === id) {
+            booksLike.splice(index,1)
+            localStorage.setItem('booksLike', JSON.stringify(booksLike))
+            //使用vuex的公共方法
+            this.$store.commit('getBooksLikeList')
+            //子组件调用父组件方法
+            if (this.$route.path.indexOf('/home')==-1){
+              this.$parent.getBooksList()
+            }
+          }
+        })
+      },
       isStar(item) {
         let booksLike = JSON.parse(localStorage.getItem('booksLike'))
-       let res =  booksLike.some(value => {
+        let res = booksLike.some(value => {
           if (value._id == item._id) {
             return true
           }
         })
-        if(res){
+        if (res) {
           return true
         }
       },
@@ -72,7 +88,7 @@
     margin-top: 2.4vw;
     .star {
       position: absolute;
-      color: #e9ff38;
+      color: #F6AB2F;
       right: 2.5vw;
       /*5*/
       top: 1.25vw;
@@ -137,7 +153,7 @@
         }
         .span2 {
           float: right;
-          background-color: darkorange;
+          background-color: mediumpurple;
         }
       }
     }

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="overflow: hidden;">
     <mu-container v-if="recommendList.boy.length<=0">
       <mu-flex class="demo-linear-progress">
         <mu-linear-progress></mu-linear-progress>
@@ -41,7 +41,7 @@
       window.removeEventListener("popstate", this.onBrowserBack, false);
     },
     created() {
-      this.getRecommendList()
+      this.getBooksList()
     },
     methods: {
       onBrowserBack() {
@@ -50,7 +50,7 @@
           this.$toast({position: 'center', duration: 500, message: '再按一次退出'})
         }
       },
-      getRecommendList() {
+      getBooksList() {
         //男
         this.$http.get('/api/book/by-categories?gender=male&type=new&major=都市&minor=&start=0&limit=20').then(result => {
           if (result.statusText == 'OK') {

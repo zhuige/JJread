@@ -36,7 +36,7 @@
           <h3>相关推荐</h3>
         </div>
         <div class="content">
-          <div class="center" data-flex="cross:top" @touchstart="booksTouchStar" @touchend="booksTouchEnd"
+          <div class="center" data-flex="cross:top" @touchstart.stop="booksTouchStar" @touchend.stop="booksTouchEnd"
                :style="{'margin-left':marginLeft+'vw'}">
             <div data-flex-box="0" class="item" v-for="item in booksRecommendList" :key="item._id"
                  @click="routerGO(item._id)">
@@ -132,7 +132,8 @@
 
       },
       routerGO(id) {
-
+          this.id = id;
+          this.getBooksRecommend()
       },
       getBooksRecommend() {
         //获取小说信息
@@ -158,6 +159,7 @@
             this.$toast('获取小说推荐失败')
           }
         })
+        this.initStar()
       },
       //滑动触摸
       booksTouchStar(e) {
@@ -264,15 +266,9 @@
         margin-left: 2.5vw;
         background-color: #fff;
         color: #4A4A4A;
-        &:active {
-          background-color: #F6AB2F;
-        }
       }
       .btn-star {
         background-color: #F6AB2F;
-        &:active {
-          background-color: #FFFFFF;
-        }
       }
     }
     .intro {

@@ -69,6 +69,7 @@
       border-bottom: 1px solid rgba(102, 51, 153, 0.5);
     }
     .none {
+      line-height: 5.5vw;
       text-align: center;
       color: #999999;
       font-size: 4.5vw;
