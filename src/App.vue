@@ -26,9 +26,9 @@
         <span class="mui-icon mui-icon-chatboxes-filled"></span>
         <span class="mui-tab-label">分类</span>
       </span>
-      <span class="mui-tab-item" :class="{active:this.$route.query.bookListType=='ranking'||this.$route.path.indexOf('/ranking')>-1}"@click="routeGo('/ranking')">
-        <span class="mui-icon mui-icon-flag"></span>
-        <span class="mui-tab-label">排行</span>
+      <span class="mui-tab-item" :class="{active:this.$route.query.bookListType=='search'||this.$route.path.indexOf('/search')>-1}"@click="routeGo('/search')">
+        <span class="mui-icon mui-icon-search"></span>
+        <span class="mui-tab-label">搜索</span>
       </span>
     </nav>
   </div>
@@ -40,7 +40,7 @@
     name: "App",
     data() {
       return {
-        transitionName:'normal',
+        transitionName:'',
         backIcon: false,
         index:1,
         touchStar:0,
@@ -78,7 +78,7 @@
             })
           }else if(this.index==4){
             this.$router.push({
-              path:'/ranking'
+              path:'/search'
             })
           }
 
@@ -94,7 +94,7 @@
         } else {
           this.direction = 'right'
         }
-        if (Math.abs(this.touchStar - this.touchEnd) > 40){
+        if (Math.abs(this.touchStar - this.touchEnd) > 60){
           if (this.direction == 'left') {
             if(this.index<4){
               this.index++
@@ -116,13 +116,17 @@
       },
     },
     watch: {
-      $route(value) {
+      $route(value,from) {
         if (this.$routerName.indexOf(value.path) > -1) {
           this.backIcon = false
         } else {
           this.backIcon = true
         }
-
+        if(value.meta.index<from.meta.index || value.query.index<from.query.index){
+          this.transitionName="right"
+        }else{
+          this.transitionName="left"
+        }
         //判断路由改变index，实现滑动跳转标记
         if(value.path.indexOf('/home')>-1 || value.query.bookListType=='home') {
           this.index=1
@@ -130,7 +134,7 @@
           this.index=2
         }else if(value.path.indexOf('/classification')>-1 || value.query.bookListType=='classification'){
           this.index=3
-        }else if(value.path.indexOf('/ranking')>-1 || value.query.bookListType=='ranking'){
+        }else if(value.path.indexOf('/search')>-1 || value.query.bookListType=='search'){
           this.index=4
         }
       }
@@ -157,7 +161,7 @@
   }
 
   .read-content {
-    height: 100vh;
+    min-height: 100vh;
     overflow: hidden;
   }
 
@@ -188,17 +192,5 @@
     transition: all 0.4s ease;
   }
 
-  .normal-enter {
-    opacity: 0;
-  }
-  .normal-leave-to {
-    opacity: 0;
-    position: fixed;
-
-  }
-  .normal-enter-active,
-  .normal-leave-active {
-    transition: all 0.6s ease;
-  }
 
 </style>

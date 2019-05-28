@@ -26,17 +26,22 @@
     data() {
       return {
         bookListType: '',
+        index:1
       }
     },
     created() {
       if (this.$route.path.indexOf('/recommend') != -1) {
         this.bookListType = 'recommend'
+        this.index=2
       } else if (this.$route.path.indexOf('/home') != -1) {
         this.bookListType = 'home'
+        this.index=1
       } else if (this.$route.path.indexOf('/classification') != -1) {
         this.bookListType = 'classification'
-      } else if (this.$route.path.indexOf('/ranking') != -1) {
-        this.bookListType = 'ranking'
+        this.index=3
+      } else if (this.$route.path.indexOf('/search') != -1) {
+        this.bookListType = 'search'
+        this.index=4
       } else {
 
       }
@@ -74,7 +79,8 @@
           path: '/booksDetail',
           query: {
             id: id,
-            bookListType: this.bookListType
+            bookListType: this.bookListType,
+            index:this.index
           }
         })
       }

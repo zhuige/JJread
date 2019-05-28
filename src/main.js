@@ -15,7 +15,7 @@ import axios from 'axios'
 import './appback'
 
 Vue.prototype.$http = axios
-Vue.prototype.$routerName=['/home', '/recommend', '/classification', '/ranking'],
+Vue.prototype.$routerName=['/home', '/recommend', '/classification', '/search'],
 Vue.use(MuseUI)
 Vue.use(MintUI)
 
