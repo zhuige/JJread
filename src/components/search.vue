@@ -1,12 +1,16 @@
 <template>
-  <div class="search">
+  <div class="search" @click="maybeWord=[]">
     <div class="head">
-      <input type="text" placeholder="搜索" v-model="searchName">
+      <input type="text" placeholder="搜索" v-model="searchName" @keyup="searchMabeWord" @focus="searchMabeWord">
       <i class="mui-icon mui-icon-search"></i>
-      <div class="searchList"></div>
+      <div class="searchList" :class="{active:maybeWord.length>0?true:false}">
+        <div class="text" v-for="(item,index) in maybeWord" :key="index">{{item}}</div>
+      </div>
     </div>
     <div class="hotWord">
-      <mu-chip class="demo-chip" v-for="item,index in searchHotList" :color="color[Math.floor((Math.random()*color.length))]" :key="index" >{{item.word}}</mu-chip>
+      <mu-chip class="demo-chip" v-for="item,index in searchHotList"
+               :color="color[Math.floor((Math.random()*color.length))]" :key="index">{{item.word}}
+      </mu-chip>
     </div>
   </div>
 </template>
@@ -18,7 +22,8 @@
       return {
         searchName: '',
         searchHotList: [],
-        color : ['primary', 'secondary', 'success', 'warning', 'info', 'error']
+        maybeWord: [],
+        color: ['primary', 'secondary', 'success', 'warning', 'info', 'error']
       }
     },
     mounted() {
@@ -34,14 +39,25 @@
       this.getHotList()
     },
     methods: {
+      //获取候选词
+      searchMabeWord() {
+        this.$http.get('/api/book/auto-complete?query=' + this.searchName).then(result => {
+          if (result.statusText == 'OK') {
+            this.maybeWord = result.data.keywords
+          } else {
+            this.$toast('获取候选词失败')
+          }
+
+        })
+      },
       //获取热词
       getHotList() {
         this.$http.get('/api/book/search-hotwords').then(result => {
-         if(result.statusText=='OK'){
-             this.searchHotList=result.data.searchHotWords
-         }else{
-           this.$toast('获取热词失败')
-         }
+          if (result.statusText == 'OK') {
+            this.searchHotList = result.data.searchHotWords
+          } else {
+            this.$toast('获取热词失败')
+          }
         })
       },
       onBrowserBack() {
@@ -80,13 +96,27 @@
 
       }
       .searchList {
+        overflow: auto;
+        background-color: rgba(255, 255, 255, 0.9);
         width: 0;
-        height: 50vw;
+        max-height: 50vw;
         transition: all 0.4s;
         opacity: 0;
         position: absolute;
         top: 10vw;
         box-shadow: 0 5px 5px -3px rgba(0, 0, 0, .2), 0 3px 14px 2px rgba(0, 0, 0, .12);
+        .text {
+          font-size: 4vw;
+          color: #4a4a4a;
+          padding: 2.5vw;
+          &:active {
+            background-color: rgba(147, 112, 219, 0.6);
+          }
+        }
+      }
+      .active {
+        width: 100%;
+        opacity: 1;
       }
     }
     .hotWord {
