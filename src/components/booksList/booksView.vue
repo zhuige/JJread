@@ -8,8 +8,9 @@
         <h3>{{item.title}}</h3>
         <p>{{item.shortIntro}}</p>
         <div class="dv">
+          <!--{{item.majorCate}}-->
           <span class="span1">{{item.author}}</span>
-          <span class="span2">{{item.majorCate}}</span>
+          <span class="span2">{{item.majorCate||item.cat}}</span>
         </div>
       </div>
       <div class="star" v-if="isStar(item)" @click.stop="cancleStar(item._id)">

@@ -1,18 +1,18 @@
 <template>
-  <div class="search" @click="maybeWord=[]">
-    <div class="head">
-      <input type="text" placeholder="搜索" v-model="searchName" @keyup="searchMabeWord" @focus="searchMabeWord">
-      <i class="mui-icon mui-icon-search" @click="routeGo"></i>
-      <div class="searchList" :class="{active:maybeWord.length>0?true:false}">
-        <div class="text" v-for="(item,index) in maybeWord" :key="index" @clikc="routeGo(item)">{{item}}</div>
+    <div class="search" @click="maybeWord=[]">
+      <div class="head">
+        <input type="text" placeholder="搜索" v-model="searchName" @keyup="searchMabeWord" @focus="searchMabeWord">
+        <span @click="routeGo(searchName)"><i class="mui-icon mui-icon-search"></i></span>
+        <div class="searchList" :class="{active:maybeWord.length>0?true:false}">
+          <div class="text" v-for="(item,index) in maybeWord" :key="index" @click="routeGo(item)">{{item}}</div>
+        </div>
+      </div>
+      <div class="hotWord">
+        <mu-chip class="demo-chip" v-for="item,index in searchHotList" @click.native="routeGo(item.word)"
+                 :color="color[Math.floor((Math.random()*color.length))]" :key="index">{{item.word}}
+        </mu-chip>
       </div>
     </div>
-    <div class="hotWord">
-      <mu-chip class="demo-chip" v-for="item,index in searchHotList" @click.native="routeGo(item)"
-               :color="color[Math.floor((Math.random()*color.length))]" :key="index">{{item.word}}
-      </mu-chip>
-    </div>
-  </div>
 </template>
 
 <script>
@@ -40,17 +40,11 @@
     },
     methods: {
       //跳转路由
-      routeGo(value){
-            if(value){
-              this.$router.push({
-                path:'/search/searchResult',
-                query:this.searchName
-              })
-            }else{
-              this.$router.push({
-                path:'/search/searchResult'
-              })
-            }
+      routeGo(value) {
+        this.$router.push({
+          path: '/search/searchResult',
+          query: {searchName: value}
+        })
       },
       //获取候选词
       searchMabeWord() {
@@ -85,6 +79,7 @@
 
 <style lang="less" scoped>
   .search {
+    margin-top: 2.5vw;
     padding-bottom: 5vw;
     .head {
       width: 80vw;
@@ -93,6 +88,7 @@
       margin-top: 1.25vw;
       position: relative;
       input {
+        color: #4a4a4a;
         font-size: 4.5vw;
         height: 10vw;
         padding-left: 6.25vw;

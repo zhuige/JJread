@@ -1,6 +1,6 @@
 <template>
   <div>
-    <mu-container v-if="classList.male.length<=0">
+    <mu-container v-if="classList.male.length<=0" style="position: fixed">
       <mu-flex class="demo-linear-progress">
         <mu-linear-progress></mu-linear-progress>
       </mu-flex>

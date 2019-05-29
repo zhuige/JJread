@@ -1,6 +1,6 @@
 <template>
   <div>
-    <mu-container v-if="loading">
+    <mu-container v-if="loading" style="position: fixed">
       <mu-flex class="demo-linear-progress">
         <mu-linear-progress></mu-linear-progress>
       </mu-flex>

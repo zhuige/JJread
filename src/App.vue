@@ -94,7 +94,7 @@
         } else {
           this.direction = 'right'
         }
-        if (Math.abs(this.touchStar - this.touchEnd) > 60){
+        if (Math.abs(this.touchStar - this.touchEnd) > 100){
           if (this.direction == 'left') {
             if(this.index<4){
               this.index++
