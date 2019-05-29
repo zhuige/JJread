@@ -2,13 +2,13 @@
   <div class="search" @click="maybeWord=[]">
     <div class="head">
       <input type="text" placeholder="搜索" v-model="searchName" @keyup="searchMabeWord" @focus="searchMabeWord">
-      <i class="mui-icon mui-icon-search"></i>
+      <i class="mui-icon mui-icon-search" @click="routeGo"></i>
       <div class="searchList" :class="{active:maybeWord.length>0?true:false}">
-        <div class="text" v-for="(item,index) in maybeWord" :key="index">{{item}}</div>
+        <div class="text" v-for="(item,index) in maybeWord" :key="index" @clikc="routeGo(item)">{{item}}</div>
       </div>
     </div>
     <div class="hotWord">
-      <mu-chip class="demo-chip" v-for="item,index in searchHotList"
+      <mu-chip class="demo-chip" v-for="item,index in searchHotList" @click.native="routeGo(item)"
                :color="color[Math.floor((Math.random()*color.length))]" :key="index">{{item.word}}
       </mu-chip>
     </div>
@@ -39,6 +39,19 @@
       this.getHotList()
     },
     methods: {
+      //跳转路由
+      routeGo(value){
+            if(value){
+              this.$router.push({
+                path:'/search/searchResult',
+                query:this.searchName
+              })
+            }else{
+              this.$router.push({
+                path:'/search/searchResult'
+              })
+            }
+      },
       //获取候选词
       searchMabeWord() {
         this.$http.get('/api/book/auto-complete?query=' + this.searchName).then(result => {

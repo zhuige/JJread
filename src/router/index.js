@@ -6,6 +6,7 @@ import classification from '../components/classification'
 import search from '../components/search'
 import booksList from '../components/booksList/booksList'
 import booksDetail from '../components/booksDetail/booksDetail'
+import searchResult from '../components/searchResult/searchResult'
 
 
 Vue.use(Router)
@@ -18,6 +19,7 @@ const router = new Router({
     {path: '/search', name: 'search', component: search,meta:{index:4}},
     {path: '/classification/booksList', name: 'booksList', component: booksList,meta:{index:3}},
     {path: '/booksDetail', name: 'booksDetail', component: booksDetail},
+    {path: '/search/searchResult', name: 'searchResult', component: searchResult,meta:{index:4}},
   ],
   linkActiveClass: 'mui-active'
 })
