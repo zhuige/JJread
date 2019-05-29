@@ -1,6 +1,6 @@
 # JJread
 > author:JJ  作者:追哥
-> A Vue.js project vue项目
+  A Vue.js project vue项目
 
 ## Build Setup
 
