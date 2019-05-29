@@ -20,7 +20,7 @@
         </div>
       </div>
       <div class="bt">
-        <span class="b1">开始阅读</span>
+        <span class="b1" @click="goReading(booksDetailsList._id)">开始阅读</span>
         <span class="b2" @click="joinLike" v-if="isStar">加入书架</span>
         <span class="b2 btn-star" v-if="!isStar" @click="cancleStar">已收藏</span>
       </div>
@@ -65,20 +65,48 @@
         moveIndex: 0,
         id: this.$route.query.id,
         bookListType: this.$route.query.bookListType,
-        isStar: true
+        isStar: true,
+        index: 1,
+        bookListType: ''
       }
     },
     created() {
       this.initStar()
       this.getBooksRecommend()
     },
+    mounted() {
+      if (this.$route.query.bookListType.indexOf('recommend') != -1) {
+        this.bookListType = 'recommend'
+        this.$route.meta.index = 2
+      } else if (this.$route.query.bookListType.indexOf('home') != -1) {
+        this.bookListType = 'home'
+        this.$route.meta.index = 1
+      } else if (this.$route.query.bookListType.indexOf('classification') != -1) {
+        this.bookListType = 'classification'
+        this.$route.meta.index = 3
+      } else if (this.$route.query.bookListType.indexOf('search') != -1) {
+        this.bookListType = 'search'
+        this.$route.meta.index = 4
+      } else {
+
+      }
+    },
     methods: {
+      goReading(id) {
+        this.$router.push({
+          path: '/reading',
+          query: {
+            bookListType: this.bookListType,
+            id: id
+          }
+        })
+      },
       //取消收藏
       cancleStar() {
         let booksLike = JSON.parse(localStorage.getItem('booksLike'))
         booksLike.forEach((item, index) => {
           if (item._id === this.id) {
-            booksLike.splice(index,1)
+            booksLike.splice(index, 1)
             localStorage.setItem('booksLike', JSON.stringify(booksLike))
             this.initStar()
           }
@@ -94,8 +122,8 @@
         })
         if (res) {
           this.isStar = false
-        }else{
-          this.isStar=true
+        } else {
+          this.isStar = true
         }
       },
       //加入书架，存储locakstorage
@@ -132,8 +160,8 @@
 
       },
       routerGO(id) {
-          this.id = id;
-          this.getBooksRecommend()
+        this.id = id;
+        this.getBooksRecommend()
       },
       getBooksRecommend() {
         //获取小说信息

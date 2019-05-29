@@ -1,7 +1,7 @@
 <template>
     <div class="search" @click="maybeWord=[]">
       <div class="head">
-        <input type="text" placeholder="搜索" v-model="searchName" @keyup="searchMabeWord" @focus="searchMabeWord">
+        <input type="text" placeholder="搜索" v-model="searchName" @focus="searchMabeWord">
         <span @click="routeGo(searchName)"><i class="mui-icon mui-icon-search"></i></span>
         <div class="searchList" :class="{active:maybeWord.length>0?true:false}">
           <div class="text" v-for="(item,index) in maybeWord" :key="index" @click="routeGo(item)">{{item}}</div>
@@ -20,9 +20,13 @@
     name: "search",
     data() {
       return {
+        //输入框双向绑定
         searchName: '',
+        //搜索热词数组
         searchHotList: [],
+        //候选词数组
         maybeWord: [],
+        //muse框架里面的颜色
         color: ['primary', 'secondary', 'success', 'warning', 'info', 'error']
       }
     },
@@ -38,6 +42,12 @@
     created() {
       this.getHotList()
     },
+    watch:{
+      //为什么用watch不用input里面的keyup呢？，因为用keyup事件你键盘点太快，会出现bug
+      searchName(){
+        this.searchMabeWord()
+      }
+    },
     methods: {
       //跳转路由
       routeGo(value) {
@@ -46,6 +56,7 @@
           query: {searchName: value}
         })
       },
+
       //获取候选词
       searchMabeWord() {
         this.$http.get('/api/book/auto-complete?query=' + this.searchName).then(result => {

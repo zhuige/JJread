@@ -19,7 +19,7 @@ module.exports = {
         }
       },
       '/chapter': {
-        target: 'http://chapterup.zhuishushenqi.com/chapter',//后端接口地址
+        target: 'http://chapterup.zhuishushenqi.com',//后端接口地址
         changeOrigin: true,//是否允许跨越
         pathRewrite: {
           '^/chapter': '',//重写,

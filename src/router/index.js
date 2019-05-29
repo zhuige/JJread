@@ -7,6 +7,7 @@ import search from '../components/search'
 import booksList from '../components/booksList/booksList'
 import booksDetail from '../components/booksDetail/booksDetail'
 import searchResult from '../components/searchResult/searchResult'
+import reading from '../components/reading/reading'
 
 
 Vue.use(Router)
@@ -20,6 +21,7 @@ const router = new Router({
     {path: '/classification/booksList', name: 'booksList', component: booksList,meta:{index:3}},
     {path: '/booksDetail', name: 'booksDetail', component: booksDetail},
     {path: '/search/searchResult', name: 'searchResult', component: searchResult,meta:{index:4}},
+    {path: '/reading', name: 'reading', component: reading},
   ],
   linkActiveClass: 'mui-active'
 })

@@ -4,7 +4,7 @@
     <!--头部-->
     <header class="mui-bar mui-bar-nav">
       <i class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" @click="back" v-if="backIcon"></i>
-      <h1 class="mui-title">追哥阅读</h1>
+      <h1 class="mui-title" style="color: #4a4a4a">追哥阅读</h1>
     </header>
     <!--中间内容 、路由-->
     <transition :name="transitionName">
@@ -122,7 +122,7 @@
         } else {
           this.backIcon = true
         }
-        if(value.meta.index<from.meta.index || value.query.index<from.query.index){
+        if(value.meta.index<from.meta.index){
           this.transitionName="right"
         }else{
           this.transitionName="left"
