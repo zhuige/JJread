@@ -1,10 +1,10 @@
 <template>
-  <div class="read-content padd" @touchstart="appTouchStar" @touchend="appTouchEnd">
+  <div class="read-content padd" :class="{nopadd:this.$route.path=='/reading'}" @touchstart="appTouchStar" @touchend="appTouchEnd">
 
     <!--头部-->
-    <header class="mui-bar mui-bar-nav">
+    <header class="mui-bar mui-bar-nav" v-if="this.$route.path!='/reading'">
       <i class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" @click="back" v-if="backIcon"></i>
-      <h1 class="mui-title" style="color: #4a4a4a">追哥阅读</h1>
+      <h1 class="mui-title">追哥阅读</h1>
     </header>
     <!--中间内容 、路由-->
     <transition :name="transitionName">
@@ -12,7 +12,7 @@
     </transition>
 
     <!--底部导航栏-->
-    <nav class="mui-bar mui-bar-tab" style="box-shadow: 0 0 1px rgba(0,0,0,0.3); z-index: 20000">
+    <nav class="mui-bar mui-bar-tab" style="box-shadow: 0 0 1px rgba(0,0,0,0.3); z-index: 20000" v-if="this.$route.path!='/reading'">
       <span class="mui-tab-item" :class="{active:this.$route.query.bookListType=='home'||this.$route.path.indexOf('/home')>-1}"@click="routeGo('/home')">
         <span class="mui-icon mui-icon-home"></span>
         <span class="mui-tab-label">书架</span>
@@ -154,6 +154,9 @@
 
   .padd {
     padding: 44px 0px 50px 0px;
+  }
+  .nopadd{
+    padding: 0;
   }
 
   .mui-bar-nav {
