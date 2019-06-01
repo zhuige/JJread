@@ -115,16 +115,19 @@
       //判断是否收藏
       initStar() {
         let booksLike = JSON.parse(localStorage.getItem('booksLike'))
-        let res = booksLike.some(item => {
-          if (item._id == this.id) {
-            return true
+        if(booksLike){
+          let res = booksLike.some(item => {
+            if (item._id == this.id) {
+              return true
+            }
+          })
+          if (res) {
+            this.isStar = false
+          } else {
+            this.isStar = true
           }
-        })
-        if (res) {
-          this.isStar = false
-        } else {
-          this.isStar = true
         }
+
       },
       //加入书架，存储locakstorage
       joinLike() {

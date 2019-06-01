@@ -68,14 +68,17 @@
       },
       isStar(item) {
         let booksLike = JSON.parse(localStorage.getItem('booksLike'))
-        let res = booksLike.some(value => {
-          if (value._id == item._id) {
+        if(booksLike){
+          let res = booksLike.some(value => {
+            if (value._id == item._id) {
+              return true
+            }
+          })
+          if (res) {
             return true
           }
-        })
-        if (res) {
-          return true
         }
+
       },
       routerGo(id) {
         this.$router.push({
