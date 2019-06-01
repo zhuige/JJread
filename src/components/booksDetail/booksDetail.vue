@@ -143,6 +143,7 @@
           if (JSON.parse(localStorage.getItem('booksLike')) == null) {
             let arr = [booksLikeObj]
             localStorage.setItem('booksLike', JSON.stringify(arr))
+            this.isStar = false
           } else {
             let booksLike = JSON.parse(localStorage.getItem('booksLike'))
             var res = booksLike.some(item => {

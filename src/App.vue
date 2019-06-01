@@ -94,7 +94,7 @@
         } else {
           this.direction = 'right'
         }
-        if (Math.abs(this.touchStar - this.touchEnd) > 100){
+        if (Math.abs(this.touchStar - this.touchEnd) > 80){
           if (this.direction == 'left') {
             if(this.index<4){
               this.index++
@@ -143,7 +143,23 @@
 </script>
 
 <style lang="less" scoped>
-
+   .mui-bar-tab{
+     height: 12.5vw;
+     .mui-tab-item{
+       height: 100%;
+     }
+     .mui-icon{
+       font-size: 6vw;
+       height: 6vw;
+       width: 6vw;
+     }
+     .mui-tab-label{
+       line-height: 5.25vw;
+       width: 100%;
+       height: 5.25vw;
+       font-size: 2.75vw!important;
+     }
+   }
   .active {
     color: mediumpurple!important;
   }
@@ -153,14 +169,20 @@
   }
 
   .padd {
-    padding: 44px 0px 50px 0px;
+    padding: 10vw 0px 50px 0px;
   }
   .nopadd{
     padding: 0;
   }
 
   .mui-bar-nav {
+    height: 10vw;
     background-color: mediumpurple;
+    h1 {
+      color: #343434;
+      font-size: 4.5vw;
+      line-height: 11vw;
+    }
   }
 
   .read-content {
@@ -194,6 +216,4 @@
   .right-leave-active {
     transition: all 0.4s ease;
   }
-
-
 </style>

@@ -81,7 +81,7 @@
       onBrowserBack() {
         if (this.$routerName.indexOf(this.$route.path) > -1) {
           window.history.pushState(null, null, document.URL);
-          this.$toast({position: 'bottom', duration: 500, message: '再按一次退出'})
+          this.$toast({position: 'center', duration: 500, message: '再按一次退出'})
         }
       }
     }
