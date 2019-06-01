@@ -67,22 +67,22 @@
         chapterContent: {},
         textList: [],
         //视口（浏览器的宽度）
-        windowWidth:'',
-        chapterScroll:0,
-        windowScroll:0
+        windowWidth: '',
+        chapterScroll: 0,
+        windowScroll: 0
       }
     },
     methods: {
-      changeChapterTop(){
-        if(this.current>=6){
-          this.chapterScroll = (this.current-6) * 0.125*this.windowWidth
-        }else{
+      changeChapterTop() {
+        if (this.current >= 6) {
+          this.chapterScroll = (this.current - 6) * 0.125 * this.windowWidth
+        } else {
           this.chapterScroll = 0
         }
       },
-      menuClick(){
-        this.open=true
-      document.getElementById('muList').scrollTo(0,this.chapterScroll)
+      menuClick() {
+        this.open = true
+        document.getElementById('muList').scrollTo(0, this.chapterScroll)
       },
       //上一章
       reduceChapter() {
@@ -192,44 +192,66 @@
       this.getTrue()
     },
     mounted() {
-      this.windowWidth=window.innerWidth
+      this.windowWidth = window.innerWidth
       let scop = this
-      window.addEventListener('scroll',function (e) {
+      window.addEventListener('scroll', function (e) {
         let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
         //把屏幕滚动高度转化成vw,适配任何移动端屏幕，存在本地localstorage
-        scop.windowScroll=scrollTop/scop.windowWidth*100
+        scop.windowScroll = scrollTop / scop.windowWidth * 100
       })
     },
     //页面销毁之前   存数据到本地
-    beforeDestroy(){
-       let readingLocationObj={
-         id:this.id,
-         link:this.link,
-         chapterScroll:this.chapterScroll/this.windowWidth*100,
-         current:this.current
-       }
-       let readingOptionObj={
-          backgroundColor:this.backgroundColor,
-         opacity:this.opacity,
-         fontSize:this.fontSize,
-         titleSize:this.titleSize
-       }
-        let readingLocation = localStorage.getItem('readingLocation')
-        let readingOption=localStorage.getItem('readingOption')
-      if(!readingLocation){
-
-      }else{
+    beforeDestroy() {
+      let readingLocationObj = {
+        id: this.id,
+        link: this.link,
+        chapterScroll: this.chapterScroll / this.windowWidth * 100,
+        current: this.current,
+        windowScroll: this.windowScroll / this.windowWidth * 100
+      }
+      let readingOptionObj = {
+        backgroundColor: this.backgroundColor,
+        opacity: this.opacity,
+        fontSize: this.fontSize,
+        titleSize: this.titleSize
+      }
+      let readingLocation = JSON.parse(localStorage.getItem('readingLocation'))
+      let readingOption = JSON.parse(localStorage.getItem('readingOption'))
+      if (!readingLocation) {
+        let arr = [readingLocationObj]
+        localStorage.setItem('readingLocation', JSON.stringify(arr))
+      } else {
+        let flag = false
+        readingLocation.forEach(value => {
+          if (value.id == readingLocationObj.id) {
+            value.link = readingLocationObj.link
+            value.chapterScroll = readingLocationObj.chapterScroll
+            value.current = readingLocationObj.current
+            value.windowScroll = readingLocationObj.windowScroll
+            flag = true
+          }
+        })
+        if (flag) {
+          localStorage.setItem('readingLocation', JSON.stringify(readingLocation))
+          console.log(11111)
+        } else {
+          readingLocation.push(readingLocationObj)
+          localStorage.setItem('readingLocation', JSON.stringify(readingLocation))
+        }
 
       }
-      if(!readingOption){
-
-      }else{
-
+      if (!readingOption) {
+        localStorage.setItem('readingOption', JSON.stringify(readingOptionObj))
+      } else {
+        readingOption = readingOptionObj
+        localStorage.setItem('readingOption', JSON.stringify(readingOption))
       }
     },
     //页面销毁
-    destroyed () {
-      window.removeEventListener('scroll')
+    destroyed() {
+      window.removeEventListener('scorll', function () {
+
+      })
     },
 
   }
@@ -281,7 +303,7 @@
     min-height: 100vh;
     padding: 2.4vw;
     p {
-      text-indent:2em;
+      text-indent: 2em;
       color: #755927;
       line-height: 7.5vw;
     }
