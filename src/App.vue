@@ -145,11 +145,11 @@
 <style lang="less" scoped>
 
   .active {
-    color: mediumpurple;
+    color: mediumpurple!important;
   }
 
   /deep/ .mui-active {
-    color: mediumpurple !important;
+    color: mediumpurple;
   }
 
   .padd {
