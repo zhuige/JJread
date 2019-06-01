@@ -68,6 +68,7 @@
         textList: [],
         //视口（浏览器的宽度）
         windowWidth: '',
+        windowHeight: '',
         chapterScroll: 0,
         windowScroll: 0
       }
@@ -166,8 +167,11 @@
         this.$http.get('/api/atoc/' + this.trueId + '?view=chapters').then(result => {
           if (result.statusText == 'OK') {
             this.chapterList = result.data.chapters
-            this.link = this.chapterList[0].link
-            this.getReadingContent()
+            let readingLocation = JSON.parse(localStorage.getItem('readingLocation'))
+            if (!readingLocation) {
+              this.link = this.chapterList[0].link
+              this.getReadingContent()
+            }
           } else {
             this.$toast('获取章节失败')
           }
@@ -193,21 +197,42 @@
     },
     mounted() {
       this.windowWidth = window.innerWidth
+      this.windowHeight = window.innerHeight
+      //获取本地数据
+      let readingLocation = JSON.parse(localStorage.getItem('readingLocation'))
+      let readingOption = JSON.parse(localStorage.getItem('readingOption'))
+      if (readingLocation) {
+        readingLocation.forEach(value => {
+          if (value.id = this.id) {
+            this.link = value.link
+            this.current = value.current
+            this.windowScroll = value.windowScroll / 100 * this.windowHeight
+          }
+        })
+        this.getReadingContent()
+        window.scrollTo(0, this.windowScroll)
+      }
+      if (readingOption) {
+        this.fontSize = readingOption.fontSize
+        this.titilSize = readingOption.titilSize
+        this.backgroundColor = readingOption.backgroundColor
+        this.opacity = readingOption.opacity
+      }
       let scop = this
       window.addEventListener('scroll', function (e) {
-        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-        //把屏幕滚动高度转化成vw,适配任何移动端屏幕，存在本地localstorage
-        scop.windowScroll = scrollTop / scop.windowWidth * 100
+        let scrollTop = window.pageYOffset
+        //把屏幕滚动高度转化成vh,适配任何移动端屏幕，存在本地localstorage
+        scop.windowScroll = scrollTop / scop.windowHeight * 100
       })
+
     },
     //页面销毁之前   存数据到本地
     beforeDestroy() {
       let readingLocationObj = {
         id: this.id,
         link: this.link,
-        chapterScroll: this.chapterScroll / this.windowWidth * 100,
         current: this.current,
-        windowScroll: this.windowScroll / this.windowWidth * 100
+        windowScroll: this.windowScroll
       }
       let readingOptionObj = {
         backgroundColor: this.backgroundColor,
@@ -225,7 +250,6 @@
         readingLocation.forEach(value => {
           if (value.id == readingLocationObj.id) {
             value.link = readingLocationObj.link
-            value.chapterScroll = readingLocationObj.chapterScroll
             value.current = readingLocationObj.current
             value.windowScroll = readingLocationObj.windowScroll
             flag = true
@@ -233,7 +257,6 @@
         })
         if (flag) {
           localStorage.setItem('readingLocation', JSON.stringify(readingLocation))
-          console.log(11111)
         } else {
           readingLocation.push(readingLocationObj)
           localStorage.setItem('readingLocation', JSON.stringify(readingLocation))
