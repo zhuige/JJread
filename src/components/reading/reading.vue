@@ -3,7 +3,7 @@
        :style="{'background-color':backgroundColor}">
     <h4 :style="{'font-size':titleSize+'vw'}">{{chapterContent.title}}</h4>
     <p v-for="(item,index) in textList" :key="index" :style="{'font-size':fontSize+'vw'}">
-      {{item}}
+      {{item.replace(/^\s*/,"")}}
     </p>
     <!--头部-->
     <header class="mui-bar mui-bar-nav" :class="{showBar:flag}">
@@ -40,8 +40,7 @@
         <div data-flex-box="1" class="bt ml" @click.stop="addChapter()">下一章</div>
       </div>
     </div>
-    <!--遮挡层-->
-
+    <!--遮挡层,亮度-->
     <div class="setOpa" :style="{'opacity':0.7-(opacity/100)}"></div>
   </div>
 </template>
@@ -169,7 +168,6 @@
           }
           this.$indicator.close()
         })
-        console.log(this.textList[0])
       }
     },
     created() {
@@ -190,10 +188,11 @@
       width: 50vw;
     }
     .chapter {
+      padding-left: 2.5vw;
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden;
-      text-align: center;
+      text-align: left;
       color: #3d3d3d;
       font-size: 3.5vw;
       line-height: 12.5vw;
@@ -226,6 +225,7 @@
     min-height: 100vh;
     padding: 2.4vw;
     p {
+      text-indent:2em;
       color: #755927;
       line-height: 7.5vw;
     }
