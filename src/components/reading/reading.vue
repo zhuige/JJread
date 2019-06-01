@@ -7,12 +7,12 @@
     </p>
     <!--头部-->
     <header class="mui-bar mui-bar-nav" :class="{showBar:flag}">
-      <i class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" @click="goBack"></i>
-      <i class="mui-action-back mui-icon mui-icon-bars mui-pull-right" @click.stop="open=true"></i>
+      <i class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" @click.stop="goBack"></i>
+      <i class="mui-action-back mui-icon mui-icon-bars mui-pull-right" @click.stop="menuClick"></i>
       <h1 class="mui-title">追哥阅读</h1>
     </header>
     <!--抽屉式导航-->
-    <mu-drawer :open.sync="open" :docked="false" :right="true" style="background-color:rgb(115, 115, 115);">
+    <mu-drawer id="muList" :open.sync="open" :docked="false" :right="true" style="background-color:rgb(115, 115, 115);">
       <mu-list>
         <div class="chapter" v-for="(item,index) in chapterList"
              :class="{active:current==index}"
@@ -66,9 +66,24 @@
         trueId: '',
         chapterContent: {},
         textList: [],
+        //视口（浏览器的宽度）
+        windowWidth:'',
+        chapterScroll:0,
+        windowScroll:0
       }
     },
     methods: {
+      changeChapterTop(){
+        if(this.current>=6){
+          this.chapterScroll = (this.current-6) * 0.125*this.windowWidth
+        }else{
+          this.chapterScroll = 0
+        }
+      },
+      menuClick(){
+        this.open=true
+      document.getElementById('muList').scrollTo(0,this.chapterScroll)
+      },
       //上一章
       reduceChapter() {
         if (this.current <= 0) {
@@ -77,6 +92,7 @@
           this.current -= 1
           this.link = this.chapterList[this.current].link
           this.getReadingContent()
+          this.changeChapterTop()
         }
       },
       //下一章
@@ -87,6 +103,7 @@
           this.current += 1
           this.link = this.chapterList[this.current].link
           this.getReadingContent()
+          this.changeChapterTop()
         }
       },
 
@@ -175,7 +192,44 @@
       this.getTrue()
     },
     mounted() {
+      this.windowWidth=window.innerWidth
+      let scop = this
+      window.addEventListener('scroll',function (e) {
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+        //把屏幕滚动高度转化成vw,适配任何移动端屏幕，存在本地localstorage
+        scop.windowScroll=scrollTop/scop.windowWidth*100
+      })
+    },
+    //页面销毁之前   存数据到本地
+    beforeDestroy(){
+       let readingLocationObj={
+         id:this.id,
+         link:this.link,
+         chapterScroll:this.chapterScroll/this.windowWidth*100,
+         current:this.current
+       }
+       let readingOptionObj={
+          backgroundColor:this.backgroundColor,
+         opacity:this.opacity,
+         fontSize:this.fontSize,
+         titleSize:this.titleSize
+       }
+        let readingLocation = localStorage.getItem('readingLocation')
+        let readingOption=localStorage.getItem('readingOption')
+      if(!readingLocation){
 
+      }else{
+
+      }
+      if(!readingOption){
+
+      }else{
+
+      }
+    },
+    //页面销毁
+    destroyed () {
+      window.removeEventListener('scroll')
     },
 
   }
@@ -210,9 +264,11 @@
       h1 {
         color: #343434;
         font-size: 4.5vw;
-        line-height: 11vw;
+        line-height: 10vw;
       }
       .mui-icon {
+        padding-top: 2.5vw;
+        padding-right: 2.5vw;
         font-size: 6.25vw;
         line-height: 5vw;
         color: #4a4a4a;
