@@ -244,7 +244,9 @@
       let readingOption = JSON.parse(localStorage.getItem('readingOption'))
       if (!readingLocation) {
         let arr = [readingLocationObj]
-        localStorage.setItem('readingLocation', JSON.stringify(arr))
+        if (readingLocationObj.id) {
+          localStorage.setItem('readingLocation', JSON.stringify(arr))
+        }
       } else {
         let flag = false
         readingLocation.forEach(value => {
@@ -256,10 +258,14 @@
           }
         })
         if (flag) {
-          localStorage.setItem('readingLocation', JSON.stringify(readingLocation))
+          if (readingLocationObj.id) {
+            localStorage.setItem('readingLocation', JSON.stringify(readingLocation))
+          }
         } else {
           readingLocation.push(readingLocationObj)
-          localStorage.setItem('readingLocation', JSON.stringify(readingLocation))
+          if (readingLocationObj.id) {
+            localStorage.setItem('readingLocation', JSON.stringify(readingLocation))
+          }
         }
 
       }
@@ -275,6 +281,7 @@
       window.removeEventListener('scorll', function () {
 
       })
+      this.$indicator.close()
     },
 
   }
