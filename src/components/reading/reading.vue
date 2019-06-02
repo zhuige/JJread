@@ -184,6 +184,9 @@
           if (result.statusText == 'OK') {
             this.chapterContent = result.data.chapter
             this.textList = this.chapterContent.cpContent.split('\n')
+            this.$nextTick(function () {
+              window.scrollTo(0, this.windowScroll)
+            })
           } else {
             this.$toast('获取章节内容失败')
           }
@@ -210,7 +213,7 @@
           }
         })
         this.getReadingContent()
-        window.scrollTo(0, this.windowScroll)
+
       }
       if (readingOption) {
         this.fontSize = readingOption.fontSize
