@@ -73,6 +73,11 @@
         windowScroll: 0
       }
     },
+    watch:{
+      link(){
+        this.getReadingContent()
+      }
+    },
     methods: {
       changeChapterTop() {
         if (this.current >= 6) {
@@ -168,9 +173,17 @@
           if (result.statusText == 'OK') {
             this.chapterList = result.data.chapters
             let readingLocation = JSON.parse(localStorage.getItem('readingLocation'))
-            if (!readingLocation) {
+            if(readingLocation){
+            let res =  readingLocation.some(value=>{
+                if(value.id==this.id){
+                  return true
+                }
+              })
+              if(!res){
+                this.link = this.chapterList[0].link
+              }
+            }else{
               this.link = this.chapterList[0].link
-              this.getReadingContent()
             }
           } else {
             this.$toast('获取章节失败')
@@ -206,14 +219,12 @@
       let readingOption = JSON.parse(localStorage.getItem('readingOption'))
       if (readingLocation) {
         readingLocation.forEach(value => {
-          if (value.id = this.id) {
+          if (value.id == this.id) {
             this.link = value.link
             this.current = value.current
             this.windowScroll = value.windowScroll / 100 * this.windowHeight
           }
         })
-        this.getReadingContent()
-
       }
       if (readingOption) {
         this.fontSize = readingOption.fontSize
